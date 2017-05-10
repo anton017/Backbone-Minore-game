@@ -3,9 +3,9 @@
  */
 var AppModel = Backbone.Model.extend({
     defaults: {
-        width: 5,
-        height: 5,
-        mineCount: 1,
+        width: 7,
+        height: 7,
+        mineCount: 15,
         openedNumber: 0,
         isWin: false,
         isLoose: false,
