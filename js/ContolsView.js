@@ -31,9 +31,11 @@ var ContolsView = Backbone.View.extend({
      * Сhanging attributes
      */
     onResetClick: function() {
-        this.model.set('isWin', false);
-        this.model.set('isLoose', false);
-        this.model.set('changeCollection', true);
+        this.model.set({
+            isWin: false,
+            isLoose: false,
+            changeCollection: true
+        });
     }
 
 });

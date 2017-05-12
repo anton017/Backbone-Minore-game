@@ -22,10 +22,7 @@ var CellView = Backbone.View.extend({
      * @protected
      */
     onCellClick: function() {
-        var haveMines = this.model.get('haveMines');
-        var x = this.model.get('x');
-        var y = this.model.get('y');
-        if (haveMines) {
+        if (this.model.get('haveMines')) {
             this.model.set('isBoom', true);
             return;
         } 

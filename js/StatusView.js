@@ -1,11 +1,14 @@
 var StatusView = Backbone.View.extend({
 
+    WIN_TEXT: "Вы выиграли! Хотите сыграть ещё?",
+    LOOSE_TEXT: "Вы проиграли! Хотите сыграть ещё?",
+
     /**Reset
      * @see Backbone.Events
      */
     events: {
-        'click .btn__yes': 'onYesClick',
-        'click .btn__no': 'onNoClick'
+        'click ._statusButtonYes': 'onYesClick',
+        'click ._statusButtonNo': 'onNoClick'
     },
 
     /**
@@ -19,27 +22,29 @@ var StatusView = Backbone.View.extend({
 
     /**
      * Render Controls
-     * @return {ContolsView}
+     * @returns {ContolsView}
      */
     render: function() {
         this.$el.html(tpl.render("Status", {
-            isGameFinished: this.model.get('isGameFinished'),
-            isWin: this.model.get('isWin'),
+            isWinner: this.model.get('isWin'),
             isLoose: this.model.get('isLoose'),
-            WIN_TEXT: "Вы выиграли! Хотите сыграть ещё?",
-            LOOSE_TEXT: "Вы проиграли! Хотите сыграть ещё?",
+            title: this.model.get('isWin') ? this.WIN_TEXT : this.LOOSE_TEXT
         }));
     },
 
     onYesClick: function() {
-        this.model.set('isWin', false);
-        this.model.set('isLoose', false);
-        this.model.set('changeCollection', true);
+        this.model.set({
+            isWin: false,
+            isLoose: false,
+            changeCollection: true
+        });
     },
 
     onNoClick: function() {
-        this.model.set('isWin', false);
-        this.model.set('isLoose', false);
+        this.model.set({
+            isWin: false,
+            isLoose: false
+        });
         this.render();
     }
 

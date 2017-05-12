@@ -3,6 +3,9 @@
  */
 var AppView = Backbone.View.extend({
 
+    CELL_SIZE: 40,
+    CELL_BORDER: 4,
+
     /**
      * @see Region
      */
@@ -17,8 +20,7 @@ var AppView = Backbone.View.extend({
      * @see Backbone.View.initialize
      */
     initialize: function() {
-        this.listenTo(this.model.fieldCollection, 'change:isOpened', this.openedNumber);
-        this.listenTo(this.model.fieldCollection, 'reset', this.isReset);
+        this.listenTo(this.model.fieldCollection, 'reset', this.onFieldCollectionReset);
     },
 
     /**
@@ -26,10 +28,8 @@ var AppView = Backbone.View.extend({
      * @return {AppView}
      */
     render: function() {
-        this.$el.html(tpl.render('App',{
-            width: this.model.get('width') * 40 + 4,
-            height: this.model.get('height') * 40 + 4
-        }));
+        this.$el.html(tpl.render('App'));
+        this.setFieldSize();
         this.regions.controls.render(ContolsView, {
             model: this.model
         });
@@ -43,25 +43,19 @@ var AppView = Backbone.View.extend({
     },
 
     /**
-     * Render openedNumber
+     * Styles Field
      */
-    openedNumber: function() {
-        if (!this.model.get('isGameFinished')) {
-            var openedNumber = this.model.get('openedNumber');
-            openedNumber++;
-            this.model.set('openedNumber', openedNumber);
-            this.checkForWin(openedNumber);
-        }
+    setFieldSize: function() {
+      this.regions.field.$el().css({
+        width: this.model.get('width') * this.CELL_SIZE + this.CELL_BORDER,
+        height: this.model.get('height') * this.CELL_SIZE + this.CELL_BORDER
+      });
     },
 
-    checkForWin: function(openedNumber) {
-        if (openedNumber === this.model.get('width') * this.model.get('height') - this.model.get('mineCount')) {
-            this.model.set('isWin', true);
-        }
-    },
-
-    isReset: function() {
-        this.model.set('openedNumber', 0);
-        this.model.set('isGameFinished', false);
+    onFieldCollectionReset: function() {
+        this.model.set({
+            openedNumber: 0,
+            isGameFinished: false
+        });
     }
 });

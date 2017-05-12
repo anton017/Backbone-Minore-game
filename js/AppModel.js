@@ -3,9 +3,9 @@
  */
 var AppModel = Backbone.Model.extend({
     defaults: {
-        width: 7,
-        height: 7,
-        mineCount: 15,
+        width: 3,
+        height: 3,
+        mineCount: 1,
         openedNumber: 0,
         isWin: false,
         isLoose: false,
@@ -17,10 +17,22 @@ var AppModel = Backbone.Model.extend({
      * Create a collection
      */
     initialize: function() {
-        var width = this.defaults.width;
-        var height = this.defaults.height;
-        var mineCount = this.defaults.mineCount;
         this.fieldCollection = new FieldCollection();
-        this.fieldCollection.render(width, height, mineCount);
-    }
+        this.fieldCollection.create(this.get('width'), this.get('height'), this.get('mineCount'));
+        this.listenTo(this.fieldCollection, 'change:isOpened', this.onOpenedNumberChange);
+    },
+
+    /**
+     * Render onOpenedNumberChange
+     */
+    onOpenedNumberChange: function() {
+        if (!this.get('isGameFinished')) {
+          var openedNumber = this.get('openedNumber');
+          openedNumber++;
+          this.set('openedNumber', openedNumber);
+          if (openedNumber === this.get('width') * this.get('height') - this.get('mineCount')) {
+              this.set('isWin', true);
+          }
+        }
+    },
 });

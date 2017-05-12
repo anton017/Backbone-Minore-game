@@ -6,8 +6,8 @@ var FieldView = Backbone.View.extend({
      */
     initialize: function() {
         this.listenTo(this.model.fieldCollection, 'change:isOpened', this.render);
-        this.listenTo(this.model.fieldCollection, 'change:isBoom', this.renderIsBoom);
-        this.listenTo(this.model, 'change:changeCollection', this.isReset);
+        this.listenTo(this.model.fieldCollection, 'change:isBoom', this.onBoom);
+        this.listenTo(this.model, 'change:changeCollection', this.onReset);
     },
 
     /**
@@ -29,21 +29,20 @@ var FieldView = Backbone.View.extend({
     /**
      * Render IsBoom
      */
-    renderIsBoom: function() {
+    onBoom: function() {
         this.render();
-        this.model.set('isLoose', true);
-        this.model.set('isGameFinished', true);
+        this.model.set({
+            isLoose: true,
+            isGameFinished: true
+        });
     },
 
     /**
      * Render Reset
      */
-    isReset: function() {
+    onReset: function() {
         this.model.fieldCollection.reset();
-        var width = this.model.get('width');
-        var height = this.model.get('height');
-        var mineCount = this.model.get('mineCount');
-        this.model.fieldCollection.render(width, height, mineCount);
+        this.model.fieldCollection.create(this.model.get('width'), this.model.get('height'), this.model.get('mineCount'));
         this.render();
         this.model.set('changeCollection', false);
     }

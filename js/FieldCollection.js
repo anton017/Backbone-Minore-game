@@ -5,11 +5,10 @@ var FieldCollection = Backbone.Collection.extend({
         this.listenTo(this, 'change:isOpened', this.onCellOpen);
     },
 
-    render: function(width, height, mineCount) {
+    create: function(width, height, mineCount) {
         this.width = width;
         this.height = height;
         this.mineCount = mineCount;
-        this.collection = this;;
         this.renderCell();
         this.setInitialMines();
         this.setNumbersAroundMines();
@@ -40,7 +39,7 @@ var FieldCollection = Backbone.Collection.extend({
         for (var mines = 1; mines <= this.mineCount; mines++) {
             var cellWithMine = Math.floor(Math.random() * this.width * this.height);;
             var haveMines = this.models[cellWithMine].get('haveMines');
-            if (haveMines === true) {
+            if (haveMines) {
                 mines--;
             }
             else {
