@@ -29,7 +29,7 @@ var StatusView = Backbone.View.extend({
             isLoose: false,
             changeCollection: true
         });
-        this.$el.empty();
+        this.$el.remove();
     },
 
     onNoClick: function() {
