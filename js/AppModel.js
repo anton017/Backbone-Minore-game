@@ -27,12 +27,12 @@ var AppModel = Backbone.Model.extend({
      */
     onOpenedNumberChange: function() {
         if (!this.get('isGameFinished')) {
-          var openedNumber = this.get('openedNumber');
-          openedNumber++;
-          this.set('openedNumber', openedNumber);
-          if (openedNumber === this.get('width') * this.get('height') - this.get('mineCount')) {
-              this.set('isWin', true);
-          }
+            var openedNumber = this.get('openedNumber');
+            openedNumber++;
+            this.set('openedNumber', openedNumber);
+            if (openedNumber === this.get('width') * this.get('height') - this.get('mineCount')) {
+                this.set('isWin', true);
+            }
         }
     },
 });

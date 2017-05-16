@@ -12,15 +12,6 @@ var StatusView = Backbone.View.extend({
     },
 
     /**
-     * Initialize component
-     * @see Backbone.View.initialize
-     */
-    initialize: function() {
-        this.listenTo(this.model, 'change:isGameFinished', this.render);
-        this.listenTo(this.model, 'change:isWin', this.render);
-    },
-
-    /**
      * Render Controls
      * @returns {ContolsView}
      */
@@ -38,6 +29,7 @@ var StatusView = Backbone.View.extend({
             isLoose: false,
             changeCollection: true
         });
+        this.$el.empty();
     },
 
     onNoClick: function() {

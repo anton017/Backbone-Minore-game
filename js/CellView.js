@@ -27,5 +27,5 @@ var CellView = Backbone.View.extend({
             return;
         } 
         this.model.set('isOpened', true);
-    },
+    }
 });

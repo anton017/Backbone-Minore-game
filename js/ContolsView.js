@@ -1,16 +1,12 @@
 var ContolsView = Backbone.View.extend({
 
-    /**Reset
+    /**
      * @see Backbone.Events
      */
     events: {
         'click .btn': 'onResetClick'
     },
 
-    /**
-     * Initialize component
-     * @see Backbone.View.initialize
-     */
     initialize: function() {
         this.listenTo(this.model, 'change:openedNumber', this.render);
     },

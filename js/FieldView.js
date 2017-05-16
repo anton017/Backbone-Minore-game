@@ -1,11 +1,7 @@
 var FieldView = Backbone.View.extend({
 
-    /**
-     * Initialize component
-     * @see Backbone.View.initialize
-     */
     initialize: function() {
-        this.listenTo(this.model.fieldCollection, 'change:isOpened', this.render);
+        this.listenTo(this.model.fieldCollection, 'change:isOpened', this.onOpened);
         this.listenTo(this.model.fieldCollection, 'change:isBoom', this.onBoom);
         this.listenTo(this.model, 'change:changeCollection', this.onReset);
     },
@@ -14,20 +10,27 @@ var FieldView = Backbone.View.extend({
      * Render View for all cells
      */
     render: function () {
-        if (!this.model.get("isGameFinished")) {
-            this.$el.empty();
-            this.model.fieldCollection.each(function(cellModel) {
-                var cellView = new CellView({ 
-                    model: cellModel,
-                });
-                cellView.render();
-                this.$el.append(cellView.el);
-            }.bind(this));
+        this.$el.empty();
+        this.model.fieldCollection.each(function(cellModel) {
+            var cellView = new CellView({ 
+                model: cellModel,
+            });
+            cellView.render();
+            this.$el.append(cellView.el);
+        }.bind(this));
+    },
+
+    /**
+     * Render isOpened
+     */
+    onOpened: function() {
+        if(!this.model.get('isGameFinished')) {
+            this.render();
         }
     },
 
     /**
-     * Render IsBoom
+     * Render isBoom
      */
     onBoom: function() {
         this.render();
