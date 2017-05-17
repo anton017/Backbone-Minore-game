@@ -3,7 +3,7 @@ var FieldView = Backbone.View.extend({
     initialize: function() {
         this.listenTo(this.model.fieldCollection, 'change:isOpened', this.onOpened);
         this.listenTo(this.model.fieldCollection, 'change:isBoom', this.onBoom);
-        this.listenTo(this.model, 'change:changeCollection', this.onReset);
+        this.listenTo(this.model.fieldCollection, 'reset', this.onReset);
     },
 
     /**
@@ -44,9 +44,11 @@ var FieldView = Backbone.View.extend({
      * Render Reset
      */
     onReset: function() {
-        this.model.fieldCollection.reset();
         this.model.fieldCollection.create(this.model.get('width'), this.model.get('height'), this.model.get('mineCount'));
         this.render();
-        this.model.set('changeCollection', false);
+        this.model.set({
+            isWin: false,
+            isLoose: false
+        });
     }
 });

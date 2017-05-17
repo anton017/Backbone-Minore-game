@@ -15,11 +15,6 @@ var AppView = Backbone.View.extend({
         field: '#field'
     },
 
-    initialize: function() {
-        this.listenTo(this.model.fieldCollection, 'reset', this.onFieldCollectionReset);
-        this.listenTo(this.model, 'change:isGameFinished change:isWin', this.onFinished);
-    },
-
     /**
      * Render ContolsView and FieldView
      * @return {AppView}
@@ -33,20 +28,10 @@ var AppView = Backbone.View.extend({
         this.regions.field.render(FieldView, {
             model: this.model
         });
-        return this;
-    },
-
-    /**
-     * Сheck for end of game
-     */
-    onFinished: function() {
-        if (this.model.get('isGameFinished') || this.model.get('isWin')) {
-            var statusView = new StatusView({ 
-                model: this.model,
+        this.regions.status.render(StatusView, {
+                model: this.model
             });
-            statusView.render();
-            this.regions.status.$el().append(statusView.el);
-        }
+        return this;
     },
 
     /**
@@ -57,12 +42,6 @@ var AppView = Backbone.View.extend({
         width: this.model.get('width') * this.CELL_SIZE + this.CELL_BORDER,
         height: this.model.get('height') * this.CELL_SIZE + this.CELL_BORDER
       });
-    },
-
-    onFieldCollectionReset: function() {
-        this.model.set({
-            openedNumber: 0,
-            isGameFinished: false
-        });
     }
+    
 });

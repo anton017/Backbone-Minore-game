@@ -9,8 +9,7 @@ var AppModel = Backbone.Model.extend({
         openedNumber: 0,
         isWin: false,
         isLoose: false,
-        isGameFinished: false,
-        changeCollection: false
+        isGameFinished: false
     },
 
     /**
@@ -20,6 +19,7 @@ var AppModel = Backbone.Model.extend({
         this.fieldCollection = new FieldCollection();
         this.fieldCollection.create(this.get('width'), this.get('height'), this.get('mineCount'));
         this.listenTo(this.fieldCollection, 'change:isOpened', this.onOpenedNumberChange);
+        this.listenTo(this.fieldCollection, 'reset', this.onFieldCollectionReset);
     },
 
     /**
@@ -35,4 +35,11 @@ var AppModel = Backbone.Model.extend({
             }
         }
     },
+
+    onFieldCollectionReset: function() {
+        this.set({
+            openedNumber: 0,
+            isGameFinished: false
+        });
+    }
 });

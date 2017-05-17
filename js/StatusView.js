@@ -11,25 +11,24 @@ var StatusView = Backbone.View.extend({
         'click ._statusButtonNo': 'onNoClick'
     },
 
-    /**
-     * Render Controls
-     * @returns {ContolsView}
-     */
-    render: function() {
-        this.$el.html(tpl.render("Status", {
-            isWinner: this.model.get('isWin'),
-            isLoose: this.model.get('isLoose'),
-            title: this.model.get('isWin') ? this.WIN_TEXT : this.LOOSE_TEXT
-        }));
+    initialize: function() {
+        this.listenTo(this.model, 'change:isGameFinished change:isWin', this.create);
+    },
+
+    create: function() {
+        if (this.model.get('isGameFinished') || this.model.get('isWin')) {
+            this.$el.empty();
+            this.$el.html(tpl.render("Status", {
+                isWinner: this.model.get('isWin'),
+                isLoose: this.model.get('isLoose'),
+                title: this.model.get('isWin') ? this.WIN_TEXT : this.LOOSE_TEXT
+            }));
+        }
     },
 
     onYesClick: function() {
-        this.model.set({
-            isWin: false,
-            isLoose: false,
-            changeCollection: true
-        });
-        this.$el.remove();
+        this.$el.empty();
+        this.model.fieldCollection.reset();
     },
 
     onNoClick: function() {
